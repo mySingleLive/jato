@@ -8,14 +8,14 @@ import org.jato.core.furture.JATOFuture;
  * @author gongjun
  * @since 2016-02-25 13:16
  */
-public class FurtureMessage implements Message {
+public class FutureMessage implements Message {
 
     protected JATOFuture furture;
 
-    public FurtureMessage() {
+    public FutureMessage() {
     }
 
-    public FurtureMessage(JATOFuture furture) {
+    public FutureMessage(JATOFuture furture) {
         this.furture = furture;
     }
 

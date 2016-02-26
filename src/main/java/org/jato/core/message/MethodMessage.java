@@ -7,7 +7,7 @@ package org.jato.core.message;
  * @author gongjun
  * @since 2016-02-25 11:15
  */
-public class MethodMessage extends FurtureMessage implements Message {
+public class MethodMessage extends FutureMessage implements Message {
 
     private String name;
 

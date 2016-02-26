@@ -1,16 +1,13 @@
 package org.jato.core;
 
 import org.jato.core.actor.JATOActor;
+import org.jato.core.actor.JATOActorFactory;
 import org.jato.core.actor.JATOInstanceActor;
 import org.jato.core.message.MethodMessage;
 import org.jetlang.channels.Channel;
 import org.jetlang.channels.MemoryChannel;
 import org.jetlang.fibers.Fiber;
-import org.jetlang.fibers.PoolFiberFactory;
 import org.jetlang.fibers.ThreadFiber;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * [类注释]
@@ -20,19 +17,18 @@ import java.util.concurrent.Executors;
  */
 public class JATO {
 
+    public static JATOActorFactory actorFactory;
+
+
     public static JATOActorFactory createActorFactory() {
-        return new JATOActorFactory();
+        if (actorFactory == null) {
+            actorFactory = new JATOActorFactory();
+        }
+        return actorFactory;
     }
 
-    public static <T> JATOInstanceActor<T> startInstanceActor(T instance) {
-//        ExecutorService threds = Executors.newCachedThreadPool();
-//        PoolFiberFactory fiberFactory = new PoolFiberFactory(threds);
-        Fiber fiber = new ThreadFiber();
-        fiber.start();
-
-        Channel<MethodMessage> mailbox = new MemoryChannel<MethodMessage>();
-        JATOInstanceActor<T> actor = new JATOInstanceActor<T>(instance, mailbox, fiber);
-        return actor;
+    public static JATOActor self() {
+        return actorFactory.self();
     }
 
     public static void dispose(JATOActor<?> actor) {

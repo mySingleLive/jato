@@ -18,6 +18,8 @@ public interface JATOActor<T> {
 
     Fiber getFiber();
 
+    JATOActorFactory getActorFactory();
+
     Callback<T> getCallback();
 
     void send(T message);

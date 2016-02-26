@@ -2,13 +2,11 @@ package org.jato.core.actor;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
 import org.jato.core.furture.JATOFuture;
-import org.jato.core.furture.JATOFutureCallback;
 import org.jato.core.message.MethodMessage;
 import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
 /**
  * [类注释]
@@ -24,8 +22,8 @@ public class JATOInstanceActor<T> extends JATOAbstractActor<MethodMessage> imple
 
     private MethodAccess methodAccess;
 
-    public JATOInstanceActor(T instance, Channel<MethodMessage> mailbox, Fiber fiber) {
-        super(mailbox, fiber);
+    public JATOInstanceActor(JATOActorFactory actorFactory, T instance, Channel<MethodMessage> mailbox, Fiber fiber) {
+        super(actorFactory, mailbox, fiber);
         this.instance = instance;
         this.clazz = (Class<T>) instance.getClass();
         methodAccess = MethodAccess.get(clazz);
@@ -41,28 +39,6 @@ public class JATOInstanceActor<T> extends JATOAbstractActor<MethodMessage> imple
     }
 
 
-    public JATOFuture getFuture(MethodMessage message) {
-        JATOFuture future = new JATOFuture();
-        message.setFurture(future);
-        send(message);
-        return future;
-    }
-
-    public Object get(MethodMessage message) {
-        try {
-            return getFuture(message).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void sendCallback(MethodMessage message, JATOFutureCallback callback) {
-        message.setFurture(callback);
-        mailbox.publish(message);
-    }
 
 
     /**
