@@ -1,5 +1,7 @@
 package org.jato.core.furture;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * [类注释]
  *
@@ -11,12 +13,14 @@ public abstract class JATOFutureCallback<T> extends JATOFuture<T> {
     public abstract void onDone(T result);
 
     @Override
-    public synchronized void set(T result) throws InterruptedException {
-//        if (done) {
-//            return;
-//        }
-//        this.result = result;
-//        this.done = true;
+    public void set(T result) throws InterruptedException {
+        if (done) {
+            return;
+        }
+        this.result = result;
+        this.done = true;
+//        notify();
         onDone(result);
     }
+
 }

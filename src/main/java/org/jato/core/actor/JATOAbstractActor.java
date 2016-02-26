@@ -52,7 +52,13 @@ public abstract class JATOAbstractActor<T> implements JATOActor<T> {
         mailbox.publish(message);
     }
 
+    public void sendMethod(String name) {
+        send((T) new MethodMessage(name));
+    }
 
+    public void sendMethod(String name, Object... args) {
+        send((T) new MethodMessage(name, args));
+    }
 
     public Callback<T> getCallback() {
         return callback;

@@ -46,6 +46,7 @@ public class JATOFuture<T> implements Future<T> {
         }
         this.result = result;
         this.done = true;
+        this.notify();
     }
 
 }

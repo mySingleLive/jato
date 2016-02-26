@@ -19,7 +19,7 @@ public class FurtureMessage implements Message {
         this.furture = furture;
     }
 
-    public synchronized void setFurture(JATOFuture furture) {
+    public void setFurture(JATOFuture furture) {
         this.furture = furture;
     }
 

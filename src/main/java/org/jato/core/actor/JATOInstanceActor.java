@@ -8,6 +8,7 @@ import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 /**
  * [类注释]
@@ -45,6 +46,17 @@ public class JATOInstanceActor<T> extends JATOAbstractActor<MethodMessage> imple
         message.setFurture(future);
         send(message);
         return future;
+    }
+
+    public Object get(MethodMessage message) {
+        try {
+            return getFuture(message).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void sendCallback(MethodMessage message, JATOFutureCallback callback) {

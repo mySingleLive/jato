@@ -25,4 +25,6 @@ public interface JATOActor<T> {
     void sendCallback(T message, JATOFutureCallback callback);
 
     JATOFuture getFuture(T message);
+
+    Object get(T message);
 }

@@ -11,6 +11,8 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -32,8 +34,26 @@ public class JATOActorFactory {
     }
 
     public void shutdown() {
-//        fiberFactory.dispose();
-        executorService.shutdown();
+        fiberFactory.dispose();
+        try {
+            executorService.shutdown(); // Disable new tasks from being submitted
+
+            // Wait a while for existing tasks to terminate
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow(); // Cancel currently executing tasks
+            }
+
+        } catch (RejectedExecutionException ex) {
+            // (Re-)Cancel if current thread also interrupted
+            executorService.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            executorService.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 
 }

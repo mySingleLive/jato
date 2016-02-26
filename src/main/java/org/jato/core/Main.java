@@ -1,7 +1,6 @@
 package org.jato.core;
 
 import org.jato.core.actor.JATOInstanceActor;
-import org.jato.core.furture.JATOFuture;
 import org.jato.core.furture.JATOFutureCallback;
 import org.jato.core.message.MethodMessage;
 
@@ -39,43 +38,37 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         JATOActorFactory factory = JATO.createActorFactory();
         JATOInstanceActor<Main> actor = factory.startInstanceActor(new Main());
-        actor.send(new MethodMessage("setCount", 0));
-        actor.send(new MethodMessage("test"));
-        actor.send(new MethodMessage("test"));
-        actor.send(new MethodMessage("test"));
-//        JATOFuture future = actor.getFuture(new MethodMessage("getCount"));
-        actor.send(new MethodMessage("test"));
-        actor.send(new MethodMessage("test"));
+        actor.sendMethod("setCount", 0);
+        actor.sendMethod("test");
+        actor.sendMethod("test");
+        actor.sendMethod("test");
+        actor.sendMethod("test");
+        actor.sendMethod("test");
 //        System.out.println(future.get());
+        factory.startInstanceActor(System.out).sendMethod("println", "haha");
+        System.out.println("xxxxx");
 
         JATOInstanceActor<Main> actor2 = factory.startInstanceActor(new Main());
-        actor2.send(new MethodMessage("setCount", 100));
-        actor2.send(new MethodMessage("test"));
-        actor2.send(new MethodMessage("test"));
-        actor2.send(new MethodMessage("test"));
-        actor2.send(new MethodMessage("test"));
-        actor2.send(new MethodMessage("test"));
+        actor2.sendMethod("setCount", 100);
+        actor2.sendMethod("test");
+        actor2.sendMethod("test");
+        actor2.sendMethod("test");
+        actor2.sendMethod("test");
+        actor2.sendMethod("test");
 
         JATOInstanceActor<ArrayList> actor3 = factory.startInstanceActor(new ArrayList());
-        actor3.send(new MethodMessage("add", "x"));
-        actor3.send(new MethodMessage("add", "y"));
-        actor3.send(new MethodMessage("add", "z"));
-        actor3.send(new MethodMessage("add", "111"));
+        for (int i = 0; i < 10; i++) {
+            actor3.sendMethod("add", i * 2);
+        }
         actor3.sendCallback(new MethodMessage("toString"), new JATOFutureCallback() {
             @Override
             public void onDone(Object result) {
-                System.out.println(result);
+                System.out.println("Thread: " + Thread.currentThread().getName() + " " + result);
             }
         });
 
-        actor3.send(new MethodMessage("add", "222"));
-        actor3.sendCallback(new MethodMessage("toString"), new JATOFutureCallback() {
-            @Override
-            public void onDone(Object result) {
-                System.out.println(result);
-            }
-        });
-
+        actor3.sendMethod("add", "222");
+        System.out.println("Thread: " + Thread.currentThread().getName() + " " + actor3.get(new MethodMessage("toString")));
         factory.shutdown();
 
 //        System.out.println(future3.get());
