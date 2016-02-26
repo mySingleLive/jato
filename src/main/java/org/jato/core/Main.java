@@ -35,7 +35,6 @@ public class Main {
 
     public void other() {
         System.out.println("current thread: " + Thread.currentThread().getName() + " do other: " + count);
-        JATO.self().send(new MethodMessage("test"));
     }
 
     public int getCount() {

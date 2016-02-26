@@ -27,9 +27,6 @@ public class JATO {
         return actorFactory;
     }
 
-    public static JATOActor self() {
-        return actorFactory.self();
-    }
 
     public static void dispose(JATOActor<?> actor) {
         actor.getFiber().dispose();
