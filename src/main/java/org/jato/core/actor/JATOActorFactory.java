@@ -31,7 +31,7 @@ public class JATOActorFactory {
 
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private PoolFiberFactory fiberFactory = new PoolFiberFactory(executorService);
-    private Map<Thread, JATOActor> instanceActorCache = new HashMap<Thread, JATOActor>();
+    private Map<Object, JATOActor> instanceActorCache = new HashMap<Object, JATOActor>();
 
     private Fiber startFiber() {
         Fiber fiber = fiberFactory.create();
@@ -39,8 +39,8 @@ public class JATOActorFactory {
         return fiber;
     }
 
-    void addInstanceActorToCache(Thread thread, JATOActor actor) {
-        instanceActorCache.put(thread, actor);
+    void addInstanceActorToCache(Object object, JATOActor actor) {
+        instanceActorCache.put(object, actor);
     }
 
     public <T> JATOCallbackActor<T> startCallbackActor(Callback<T> callback) {

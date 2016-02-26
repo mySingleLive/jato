@@ -44,7 +44,7 @@ public abstract class JATOAbstractActor<T> implements JATOActor<T> {
         final JATOAbstractActor<T> self = this;
         this.callback = new Callback<T>() {
             public void onMessage(T t) {
-                getActorFactory().addActorThreadToCache(Thread.currentThread(), self);
+                getActorFactory().addInstanceActorToCache(self, self);
                 self.onReceive(t);
             }
         };
