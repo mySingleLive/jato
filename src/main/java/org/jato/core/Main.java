@@ -70,7 +70,7 @@ public class Main {
             }
         });
 
-        JATOCallbackActor callbackActor2 = factory.startCallbackActor(new Callback<Object>() {
+        final JATOCallbackActor callbackActor2 = factory.startCallbackActor(new Callback<Object>() {
             public void onMessage(Object message) {
                 if (message.equals("start")) {
                     System.out.println("do start: " + Thread.currentThread().getName());

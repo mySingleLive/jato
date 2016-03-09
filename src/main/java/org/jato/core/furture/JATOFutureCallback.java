@@ -19,8 +19,8 @@ public abstract class JATOFutureCallback<T> extends JATOFuture<T> {
         }
         this.result = result;
         this.done = true;
-//        notify();
         onDone(result);
     }
 
 }
+

@@ -47,7 +47,7 @@ public class JATOInstanceActor<T> extends JATOAbstractActor<MethodMessage> imple
      * @param paramType
      * @return
      */
-    private boolean isMatchType(Class argType, Class paramType) {
+    public static boolean isMatchType(Class argType, Class paramType) {
         if (argType.equals(paramType)) {
             return true;
         }
